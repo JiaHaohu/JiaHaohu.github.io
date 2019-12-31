@@ -135,7 +135,15 @@
         <p>#Java性能调优</p>
 <h2 id="1-如何制定性能调优标准"><a href="#1-如何制定性能调优标准" class="headerlink" title="1.如何制定性能调优标准"></a>1.如何制定性能调优标准</h2><h3 id="1-为什么要做性能调优？"><a href="#1-为什么要做性能调优？" class="headerlink" title="1.为什么要做性能调优？"></a>1.为什么要做性能调优？</h3><pre><code>1.提高系统极限性能
 2.节省服务器资源</code></pre><h3 id="2-什么时候开始做性能调优？"><a href="#2-什么时候开始做性能调优？" class="headerlink" title="2.什么时候开始做性能调优？"></a>2.什么时候开始做性能调优？</h3><pre><code>系统编码完成之后开始优化</code></pre><h3 id="3-有那些参考因素可以体现系统性能"><a href="#3-有那些参考因素可以体现系统性能" class="headerlink" title="3.有那些参考因素可以体现系统性能?"></a>3.有那些参考因素可以体现系统性能?</h3><p><strong>CPU</strong><br><strong>内存</strong><br><strong>磁盘IO</strong><br><strong>网络</strong><br><strong>异常</strong><br><strong>数据库</strong><br><strong>锁竞争</strong></p>
-<h4 id="衡量系统性能的指标"><a href="#衡量系统性能的指标" class="headerlink" title="衡量系统性能的指标"></a>衡量系统性能的指标</h4><p><strong>系统响应时间</strong><br>数据库响应时间：数据库操作所消耗的时间，往往是整个请求链中最耗时的；<br>服务端响应时间：服务端包括 Nginx分发的请求所消耗的时间以及服务端程序执行所消耗的时间；<br>网络响应时间：这是网络传输时，网络硬件需要对传输的请求进行解析等操作所消耗的时间；<br>客户端响应时间：对于普通的 Web、App 客户端来说，消耗时间是可以忽略不计的，但如果你的客户端嵌入了大量的逻辑处理，消耗的时间就有可能变长，从而成为系统的瓶颈。<br><strong>吞吐量</strong><br>统接口的 TPS（每秒事务处理量），因为 TPS 体现了接口的性能，TPS 越大，性能越好<br><strong>磁盘吞吐量</strong><br>一种是 IOPS（Input/Output Per Second），即每秒的输入输出量（或读写次数），这种是指单位时间内系统能处理的 I/O 请求数量，I/O 请求通常为读或写数据操作请求，关注的是随机读写性能。适应于随机读写频繁的应用，如小文件存储（图片）、OLTP 数据库、邮件服务器。</p>
+<h4 id="衡量系统性能的指标"><a href="#衡量系统性能的指标" class="headerlink" title="衡量系统性能的指标"></a>衡量系统性能的指标</h4><p><strong>系统响应时间</strong></p>
+<p>数据库响应时间：数据库操作所消耗的时间，往往是整个请求链中最耗时的；</p>
+<p>服务端响应时间：服务端包括 Nginx分发的请求所消耗的时间以及服务端程序执行所消耗的时间；</p>
+<p>网络响应时间：这是网络传输时，网络硬件需要对传输的请求进行解析等操作所消耗的时间；</p>
+<p>客户端响应时间：对于普通的 Web、App 客户端来说，消耗时间是可以忽略不计的，但如果你的客户端嵌入了大量的逻辑处理，消耗的时间就有可能变长，从而成为系统的瓶颈。</p>
+<p><strong>吞吐量</strong></p>
+<p>统接口的 TPS（每秒事务处理量），因为 TPS 体现了接口的性能，TPS 越大，性能越好</p>
+<p><strong>磁盘吞吐量</strong></p>
+<p>一种是 IOPS（Input/Output Per Second），即每秒的输入输出量（或读写次数），这种是指单位时间内系统能处理的 I/O 请求数量，I/O 请求通常为读或写数据操作请求，关注的是随机读写性能。适应于随机读写频繁的应用，如小文件存储（图片）、OLTP 数据库、邮件服务器。</p>
 <p>另一种是数据吞吐量，这种是指单位时间内可以成功传输的数据量。对于大量顺序读写频繁的应用，传输大量连续数据，例如，电视台的视频编辑、视频点播 VOD（Video On Demand），数据吞吐量则是关键衡量指标。</p>
 <p>接下来看网络吞吐量，这个是指网络传输时没有帧丢失的情况下，设备能够接受的最大数据速率。网络吞吐量不仅仅跟带宽有关系，还跟 CPU 的处理能力、网卡、防火墙、外部接口以及 I/O 等紧密关联。而吞吐量的大小主要由网卡的处理能力、内部程序算法以及带宽大小决定。</p>
 <p><strong>计算机资源分配使用率</strong></p>
@@ -159,7 +167,7 @@
 <p>如果在多线程编程中，String 对象的拼接涉及到线程安全，你可以使用 StringBuffer。但是要注意，由于 StringBuffer 是线程安全的，涉及到锁竞争，所以从性能上来说，要比 StringBuilder 差一些。</p>
 <p><strong>如何使用 String.intern 节省内存</strong></p>
 <p><img src="/img/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/3.png" alt=""></p>
-<p>使用 intern 方法需要注意的一点是，一定要结合实际场景。因为常量池的实现是类似于一个 HashTable 的实现方式，HashTable 存储的数据越大，遍历的时间复杂度就会增加。如果数据过大，会增加整个字符串常量池的负担</p>
+<p>使用 intern 方法需要注意的一点是，一定要结合实际场景。因为常量池的实现是类似于一个 HashTable 的实现方式，HashTable 存储的数据越大，遍历的时间复杂度就会增加。如果数据过大，会增加整个字符串常量池的负担。</p>
 <h2 id="3-如何使用字符串的分割方法？"><a href="#3-如何使用字符串的分割方法？" class="headerlink" title="3. 如何使用字符串的分割方法？"></a>3. 如何使用字符串的分割方法？</h2><p>Split() 方法使用了正则表达式实现了其强大的分割功能，而正则表达式的性能是非常不稳定的，使用不恰当会引起回溯问题，很可能导致 CPU 居高不下。</p>
 <p>所以我们应该慎重使用 Split() 方法，我们可以用 String.indexOf() 方法代替 Split() 方法完成字符串的分割。如果实在无法满足需求，你就在使用 Split() 方法时，对回溯问题加以重视就可以了。</p>
 <h2 id="4-慎重使用正则表达式"><a href="#4-慎重使用正则表达式" class="headerlink" title="4. 慎重使用正则表达式"></a>4. 慎重使用正则表达式</h2><ol>
@@ -176,14 +184,14 @@
 <ol start="3">
 <li>减少捕获嵌套</li>
 </ol>
-<h2 id="5-ArrayList还是LinkedList？使用不当性能差千倍"><a href="#5-ArrayList还是LinkedList？使用不当性能差千倍" class="headerlink" title="5.ArrayList还是LinkedList？使用不当性能差千倍"></a>5.ArrayList还是LinkedList？使用不当性能差千倍</h2><p>1.ArrayList 和 LinkedList 新增元素操作测试</p>
+<h2 id="5-ArrayList还是LinkedList？使用不当性能差千倍"><a href="#5-ArrayList还是LinkedList？使用不当性能差千倍" class="headerlink" title="5.ArrayList还是LinkedList？使用不当性能差千倍"></a>5.ArrayList还是LinkedList？使用不当性能差千倍</h2><p><strong>1.ArrayList 和 LinkedList 新增元素操作测试</strong></p>
 <p>从集合头部位置新增元素</p>
 <p>从集合中间位置新增元素</p>
 <p>从集合尾部位置新增元素</p>
 <p>ArrayList&gt;LinkedList</p>
 <p>ArrayList&lt;LinkedList</p>
 <p>ArrayList&lt;LinkedList</p>
-<p>2.ArrayList 和 LinkedList 删除元素操作测试</p>
+<p><strong>2.ArrayList 和 LinkedList 删除元素操作测试</strong></p>
 <p>从集合头部位置删除元素</p>
 <p>从集合中间位置删除元素</p>
 <p>从集合尾部位置删除元素</p>
@@ -191,7 +199,7 @@
 <p>ArrayList&lt;LinkedList</p>
 <p>ArrayList&lt;LinkedList</p>
 <p>ArrayList 和 LinkedList 删除元素操作测试的结果和添加元素操作测试的结果很接近，这是一样的原理，我在这里就不重复讲解了</p>
-<p>3.ArrayList 和 LinkedList 遍历元素操作测试</p>
+<p><strong>3.ArrayList 和 LinkedList 遍历元素操作测试</strong></p>
 <p>for(;;) 循环</p>
 <p>迭代器迭代循环</p>
 <p>ArrayList&lt;LinkedList</p>
