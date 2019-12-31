@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="贝壳找房">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Java性能调优 - 胡佳豪的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> coding(Java Hadoop Spark Flink 数据挖掘) </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/pic/avatar.gif" />
+        </div>
+        <div class="name">
+            <i>胡佳豪</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-如何制定性能调优标准"><span class="toc-text">1.如何制定性能调优标准</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-为什么要做性能调优？"><span class="toc-text">1.为什么要做性能调优？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-什么时候开始做性能调优？"><span class="toc-text">2.什么时候开始做性能调优？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-有那些参考因素可以体现系统性能"><span class="toc-text">3.有那些参考因素可以体现系统性能?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#衡量系统性能的指标"><span class="toc-text">衡量系统性能的指标</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-如何制定性能调优策略"><span class="toc-text">2.如何制定性能调优策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-字符串性能优化"><span class="toc-text">3.字符串性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#String对象是如何实现的"><span class="toc-text">String对象是如何实现的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String对象的优化"><span class="toc-text">String对象的优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-如何使用字符串的分割方法？"><span class="toc-text">3. 如何使用字符串的分割方法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-慎重使用正则表达式"><span class="toc-text">4. 慎重使用正则表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-ArrayList还是LinkedList？使用不当性能差千倍"><span class="toc-text">5.ArrayList还是LinkedList？使用不当性能差千倍</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i> coding(Java Hadoop Spark Flink 数据挖掘) </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Java性能调优
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-26 10:57:11</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <p>#Java性能调优</p>
+<h2 id="1-如何制定性能调优标准"><a href="#1-如何制定性能调优标准" class="headerlink" title="1.如何制定性能调优标准"></a>1.如何制定性能调优标准</h2><h3 id="1-为什么要做性能调优？"><a href="#1-为什么要做性能调优？" class="headerlink" title="1.为什么要做性能调优？"></a>1.为什么要做性能调优？</h3><pre><code>1.提高系统极限性能
+2.节省服务器资源</code></pre><h3 id="2-什么时候开始做性能调优？"><a href="#2-什么时候开始做性能调优？" class="headerlink" title="2.什么时候开始做性能调优？"></a>2.什么时候开始做性能调优？</h3><pre><code>系统编码完成之后开始优化</code></pre><h3 id="3-有那些参考因素可以体现系统性能"><a href="#3-有那些参考因素可以体现系统性能" class="headerlink" title="3.有那些参考因素可以体现系统性能?"></a>3.有那些参考因素可以体现系统性能?</h3><p><strong>CPU</strong><br><strong>内存</strong><br><strong>磁盘IO</strong><br><strong>网络</strong><br><strong>异常</strong><br><strong>数据库</strong><br><strong>锁竞争</strong></p>
+<h4 id="衡量系统性能的指标"><a href="#衡量系统性能的指标" class="headerlink" title="衡量系统性能的指标"></a>衡量系统性能的指标</h4><p><strong>系统响应时间</strong><br>数据库响应时间：数据库操作所消耗的时间，往往是整个请求链中最耗时的；<br>服务端响应时间：服务端包括 Nginx分发的请求所消耗的时间以及服务端程序执行所消耗的时间；<br>网络响应时间：这是网络传输时，网络硬件需要对传输的请求进行解析等操作所消耗的时间；<br>客户端响应时间：对于普通的 Web、App 客户端来说，消耗时间是可以忽略不计的，但如果你的客户端嵌入了大量的逻辑处理，消耗的时间就有可能变长，从而成为系统的瓶颈。<br><strong>吞吐量</strong><br>统接口的 TPS（每秒事务处理量），因为 TPS 体现了接口的性能，TPS 越大，性能越好<br><strong>磁盘吞吐量</strong><br>一种是 IOPS（Input/Output Per Second），即每秒的输入输出量（或读写次数），这种是指单位时间内系统能处理的 I/O 请求数量，I/O 请求通常为读或写数据操作请求，关注的是随机读写性能。适应于随机读写频繁的应用，如小文件存储（图片）、OLTP 数据库、邮件服务器。</p>
+<p>另一种是数据吞吐量，这种是指单位时间内可以成功传输的数据量。对于大量顺序读写频繁的应用，传输大量连续数据，例如，电视台的视频编辑、视频点播 VOD（Video On Demand），数据吞吐量则是关键衡量指标。</p>
+<p>接下来看网络吞吐量，这个是指网络传输时没有帧丢失的情况下，设备能够接受的最大数据速率。网络吞吐量不仅仅跟带宽有关系，还跟 CPU 的处理能力、网卡、防火墙、外部接口以及 I/O 等紧密关联。而吞吐量的大小主要由网卡的处理能力、内部程序算法以及带宽大小决定。</p>
+<p><strong>计算机资源分配使用率</strong></p>
+<p>通常由 CPU 占用率、内存使用率、磁盘 I/O、网络 I/O 来表示资源使用率。这几个参数好比一个木桶，如果其中任何一块木板出现短板，任何一项分配不合理，对整个系统性能的影响都是毁灭性的。</p>
+<p><strong>负载承受能力</strong></p>
+<p>当系统压力上升时，你可以观察，系统响应时间的上升曲线是否平缓。这项指标能直观地反馈给你，系统所能承受的负载压力极限。例如，当你对系统进行压测时，系统的响应时间会随着系统并发数的增加而延长，直到系统无法处理这么多请求，抛出大量错误时，就到了极限。</p>
+<h2 id="2-如何制定性能调优策略"><a href="#2-如何制定性能调优策略" class="headerlink" title="2.如何制定性能调优策略"></a>2.如何制定性能调优策略</h2><p><img src="/img/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/1.png" alt=""></p>
+<h2 id="3-字符串性能优化"><a href="#3-字符串性能优化" class="headerlink" title="3.字符串性能优化"></a>3.字符串性能优化</h2><p>高效地使用字符串，可以提升系统的整体性能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">String str1= <span class="string">"abc"</span>;</span><br><span class="line"></span><br><span class="line">String str2= <span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line"></span><br><span class="line">String str3= str2.intern();</span><br><span class="line"></span><br><span class="line">assertSame(str1==str2);</span><br><span class="line"></span><br><span class="line">assertSame(str2==str3);</span><br><span class="line"></span><br><span class="line">assertSame(str1==str3)</span><br></pre></td></tr></table></figure>
+
+<h3 id="String对象是如何实现的"><a href="#String对象是如何实现的" class="headerlink" title="String对象是如何实现的"></a>String对象是如何实现的</h3><p>在 Java 语言中，Sun 公司的工程师们对 String 对象做了大量的优化，来节约内存空间，提升 String 对象在系统中的性能。一起来看看优化过程，如下图所示：</p>
+<p><img src="/img/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/2.png" alt=""></p>
+<p><strong>String对象的不可变性</strong></p>
+<p>了解了 String 对象的实现后，你有没有发现在实现代码中 String 类被 final 关键字修饰了，而且变量 char 数组也被 final 修饰了。</p>
+<p>我们知道类被 final 修饰代表该类不可继承，而 char[] 被 final+private 修饰，代表了 String 对象不可被更改。Java 实现的这个特性叫作 String 对象的不可变性，即 String 对象一旦创建成功，就不能再对它进行改变。</p>
+<p>第一，保证 String 对象的安全性。假设 String 对象是可变的，那么 String 对象将可能被恶意修改。</p>
+<p>第二，保证 hash 属性值不会频繁变更，确保了唯一性，使得类似 HashMap 容器才能实现相应的 key-value 缓存功能。</p>
+<p>第三，可以实现字符串常量池。在 Java 中，通常有两种创建字符串对象的方式，一种是通过字符串常量的方式创建，如 String str=“abc”；另一种是字符串变量通过 new 形式的创建，如 String str = new String(“abc”)。</p>
+<h3 id="String对象的优化"><a href="#String对象的优化" class="headerlink" title="String对象的优化"></a>String对象的优化</h3><p><strong>1.如何构建超大字符串</strong></p>
+<p>平时做字符串拼接的时候，我建议你还是要显示地使用 String Builder 来提升系统性能。</p>
+<p>如果在多线程编程中，String 对象的拼接涉及到线程安全，你可以使用 StringBuffer。但是要注意，由于 StringBuffer 是线程安全的，涉及到锁竞争，所以从性能上来说，要比 StringBuilder 差一些。</p>
+<p><strong>如何使用 String.intern 节省内存</strong></p>
+<p><img src="/img/Java%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/3.png" alt=""></p>
+<p>使用 intern 方法需要注意的一点是，一定要结合实际场景。因为常量池的实现是类似于一个 HashTable 的实现方式，HashTable 存储的数据越大，遍历的时间复杂度就会增加。如果数据过大，会增加整个字符串常量池的负担</p>
+<h2 id="3-如何使用字符串的分割方法？"><a href="#3-如何使用字符串的分割方法？" class="headerlink" title="3. 如何使用字符串的分割方法？"></a>3. 如何使用字符串的分割方法？</h2><p>Split() 方法使用了正则表达式实现了其强大的分割功能，而正则表达式的性能是非常不稳定的，使用不恰当会引起回溯问题，很可能导致 CPU 居高不下。</p>
+<p>所以我们应该慎重使用 Split() 方法，我们可以用 String.indexOf() 方法代替 Split() 方法完成字符串的分割。如果实在无法满足需求，你就在使用 Split() 方法时，对回溯问题加以重视就可以了。</p>
+<h2 id="4-慎重使用正则表达式"><a href="#4-慎重使用正则表达式" class="headerlink" title="4. 慎重使用正则表达式"></a>4. 慎重使用正则表达式</h2><ol>
+<li>少用贪婪模式，多用独占模式</li>
+</ol>
+<p>贪婪模式会引起回溯问题，我们可以使用独占模式来避免回溯。前面详解过了，这里我就不再解释了。</p>
+<ol start="2">
+<li>减少分支选择</li>
+</ol>
+<p>分支选择类型“(X|Y|Z)”的正则表达式会降低性能，我们在开发的时候要尽量减少使用。如果一定要用，我们可以通过以下几种方式来优化：</p>
+<p>首先，我们需要考虑选择的顺序，将比较常用的选择项放在前面，使它们可以较快地被匹配；</p>
+<p>其次，我们可以尝试提取共用模式，例如，将“(abcd|abef)”替换为“ab(cd|ef)”，后者匹配速度较快，因为 NFA 自动机会尝试匹配 ab，如果没有找到，就不会再尝试任何选项；</p>
+<p>最后，如果是简单的分支选择类型，我们可以用三次 index 代替“(X|Y|Z)”，如果测试的话，你就会发现三次 index 的效率要比“(X|Y|Z)”高出一些。</p>
+<ol start="3">
+<li>减少捕获嵌套</li>
+</ol>
+<h2 id="5-ArrayList还是LinkedList？使用不当性能差千倍"><a href="#5-ArrayList还是LinkedList？使用不当性能差千倍" class="headerlink" title="5.ArrayList还是LinkedList？使用不当性能差千倍"></a>5.ArrayList还是LinkedList？使用不当性能差千倍</h2><p>1.ArrayList 和 LinkedList 新增元素操作测试</p>
+<p>从集合头部位置新增元素</p>
+<p>从集合中间位置新增元素</p>
+<p>从集合尾部位置新增元素</p>
+<p>ArrayList&gt;LinkedList</p>
+<p>ArrayList&lt;LinkedList</p>
+<p>ArrayList&lt;LinkedList</p>
+<p>2.ArrayList 和 LinkedList 删除元素操作测试</p>
+<p>从集合头部位置删除元素</p>
+<p>从集合中间位置删除元素</p>
+<p>从集合尾部位置删除元素</p>
+<p>ArrayList&gt;LinkedList</p>
+<p>ArrayList&lt;LinkedList</p>
+<p>ArrayList&lt;LinkedList</p>
+<p>ArrayList 和 LinkedList 删除元素操作测试的结果和添加元素操作测试的结果很接近，这是一样的原理，我在这里就不重复讲解了</p>
+<p>3.ArrayList 和 LinkedList 遍历元素操作测试</p>
+<p>for(;;) 循环</p>
+<p>迭代器迭代循环</p>
+<p>ArrayList&lt;LinkedList</p>
+<p>ArrayList≈LinkedList</p>
+<p>LinkedList 的迭代循环遍历和 ArrayList 的迭代循环遍历性能相当，也不会太差，所以在遍历 LinkedList 时，我们要切忌使用 for 循环遍历</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+        <li>
+            <a target="_blank" href="https://www.zhihu.com/people/18710756205">
+                            <span class="fa-stack fa-lg">
+                                 <i class="iconfont icon-zhihu"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+        <li>
+            <a target="_blank" href="http://weibo.com/18710756205">
+                            <span class="fa-stack fa-lg">
+                                  <i class="iconfont icon-weibo"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/JiaHaohu">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud" target="_blank" rel="noopener">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+    <script>
+        /**
+         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+        */
+        if( '' || '')
+        var disqus_config = function () {
+            this.page.url = '';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = ''; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://airclouds-blog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+
+
+
+</html>
